@@ -1,4 +1,5 @@
 {
+  "globalEnv": ["JWT_SECRET"],
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
