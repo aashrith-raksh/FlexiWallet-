@@ -7,7 +7,9 @@ import { RecoilRoot } from "recoil";
 const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <SessionProvider>
-      <RecoilRoot>{children}</RecoilRoot>
+      <RecoilRoot>
+        {children}
+      </RecoilRoot>
     </SessionProvider>
   );
 };

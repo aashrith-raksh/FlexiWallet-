@@ -2,15 +2,19 @@ import { prisma } from "@repo/db";
 import NextAuth, { NextAuthResult } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema, SignInType } from "./zod";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
 export const result = NextAuth({
   providers: [
     Credentials({
       name: "Credentials",
       credentials: {
-        phone: {},
-        password: {},
+        phone: { label: "Phone", placeholder: "1234567890" },
+        password: {
+          label: "Password",
+          placeholder: "password",
+          type: "password",
+        },
       },
 
       authorize: async (credentials: SignInType) => {
@@ -19,12 +23,12 @@ export const result = NextAuth({
           const validInputs = await signInSchema.safeParseAsync(credentials);
 
           if (!validInputs) throw new Error("Invalid Inputs");
-
           const { phone, password } = credentials;
+
           //   console.log("\n\tCREDENTIALS: ", credentials, "\n");
 
           //   HASH THE PASSWORD
-          // const hashedPassword = await bcrypt.hash(credentials.password, 10);
+          const hashedPassword = await bcrypt.hash(password, 10);
 
           // FIND THE USER
           const existingUser = await prisma.user.findFirst({
@@ -34,12 +38,12 @@ export const result = NextAuth({
           });
 
           if (existingUser) {
-            // const validPassword = await bcrypt.compare(
-            //   password,
-            //   existingUser.password
-            // );
+            const validPassword = await bcrypt.compare(
+              credentials.password,
+              existingUser.password
+            );
 
-            const validPassword = password === existingUser.password
+            // const validPassword = password === existingUser.password;
             if (validPassword) {
               return {
                 id: existingUser.id.toString(),
@@ -47,6 +51,8 @@ export const result = NextAuth({
                 phone: existingUser.phone,
               };
             } else {
+              console.log("Invalid password..")
+              console.log("\tactual password:", existingUser.password, "\n")
               throw new Error("Invalid password.");
             }
           } else {
@@ -54,7 +60,8 @@ export const result = NextAuth({
               const newUser = await prisma.user.create({
                 data: {
                   phone,
-                  password: password,
+                  // password: password,
+                  password: hashedPassword,
                 },
               });
 
@@ -77,27 +84,28 @@ export const result = NextAuth({
       },
     }),
   ],
-  pages: {
-    signIn: "/signin",
-  },
+  // pages: {
+  //   signIn: "/signin",
+  // },
   callbacks: {
-    jwt({ token, user }) {
+    jwt(params) {
+      const { token, user } = params;
+
       if (user) {
         token.id = user.id;
       }
+
       return token;
     },
     session({ session, token }) {
-      //@ts-ignore
+      // @ts-ignore
       session.user.id = token.id;
       return session;
     },
   },
 });
 
-
-
-export const handlers: NextAuthResult['handlers'] = result.handlers;
-export const auth: NextAuthResult['auth'] = result.auth;
-export const signIn: NextAuthResult['signIn'] = result.signIn;
-export const signOut: NextAuthResult['signOut'] = result.signOut;
+export const handlers: NextAuthResult["handlers"] = result.handlers;
+export const auth: NextAuthResult["auth"] = result.auth;
+export const signIn: NextAuthResult["signIn"] = result.signIn;
+export const signOut: NextAuthResult["signOut"] = result.signOut;
