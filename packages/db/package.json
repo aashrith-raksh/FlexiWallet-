@@ -13,16 +13,17 @@
   "dependencies": {
     "@prisma/client": "^6.0.1"
   },
-  "exports":{
-    ".":{
-      "import":"./dist/index.js",
-      "require":"./dist/index.js",
-      "types":"./dist/index.d.ts"
-    },
-    "./client":{
-      "import":"./dist/client.js",
-      "require":"./dist/client.js",
-      "types":"./dist/client.d.ts"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
