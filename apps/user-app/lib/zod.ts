@@ -10,4 +10,12 @@ export const signInSchema = object({
     .max(32, "Password must be less than 32 characters"),
 });
 
-export type SignInType = Zod.infer<typeof signInSchema>
+export type SignInType = Zod.infer<typeof signInSchema>;
+
+export type TransactionType = {
+  time: Date;
+  key: number;
+  amount: number;
+  status: string;
+  provider: string;
+};
