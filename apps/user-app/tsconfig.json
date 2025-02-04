@@ -18,7 +18,7 @@
     "next-env.d.ts",
     "next.config.js",
     ".next/types/**/*.ts"
-  ],
+, ".next/types/app/(dashboard)/home/page.tsx"  ],
   "exclude": ["node_modules"],
   "declaration": false,
   "declarationMap": false
