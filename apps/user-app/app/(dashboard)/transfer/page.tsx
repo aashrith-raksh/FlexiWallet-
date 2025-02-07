@@ -36,6 +36,7 @@ async function getOnRampTransactions() {
 export default async function TransactionsPage() {
     const balance = await getBalance();
     const transactions = await getOnRampTransactions();
+    const latestFirstTransactions = transactions.reverse()
 
     return <div className="w-screen">
         <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
@@ -48,7 +49,7 @@ export default async function TransactionsPage() {
             <div>
                 <BalanceCard amount={balance.amount} locked={balance.locked} />
                 <div className="pt-4">
-                    <OnRampTransactions transactions={transactions} />
+                    <OnRampTransactions transactions={latestFirstTransactions} />
                 </div>
             </div>
         </div>
