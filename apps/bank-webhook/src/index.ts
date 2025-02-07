@@ -4,7 +4,10 @@ import { paymentDetailsSchema } from "@/src/types/index";
 const app = express();
 const PORT = process.env.PORT || 3003;
 
+app.use(express.json());
+
 app.post("/hdfc-webhook", async (req, res): Promise<any> => {
+  console.log("body:",req.body)
   const validInputs = paymentDetailsSchema.safeParse(req.body);
 
   console.log("validInputs:",validInputs)
