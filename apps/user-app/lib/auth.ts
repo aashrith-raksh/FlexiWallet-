@@ -2,7 +2,7 @@ import { prisma } from "@repo/db";
 import NextAuth, { NextAuthResult } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema, SignInType } from "./zod";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export const result = NextAuth({
   providers: [

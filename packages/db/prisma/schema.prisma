@@ -23,6 +23,8 @@ model User {
 
   Balance           Balance[]
   OnRampTransaction OnRampTransaction[]
+  sentTransfers     PeerTransaction[]   @relation(name: "senderRelation")
+  receivedTransfers PeerTransaction[]   @relation(name: "receiverRelation")
 }
 
 model Merchant {
@@ -54,6 +56,16 @@ model Balance {
   amount Int
   locked Int
   user   User @relation(fields: [userId], references: [id])
+}
+
+model PeerTransaction {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  senderId   Int
+  receiverId Int
+  timestamp  DateTime
+  sender     User     @relation(name: "senderRelation", fields: [senderId], references: [id])
+  receiver   User     @relation(name: "receiverRelation", fields: [receiverId], references: [id])
 }
 
 enum OnRampStatus {

@@ -7,11 +7,11 @@ const PORT = process.env.PORT || 3003;
 app.use(express.json());
 
 app.post("/hdfc-webhook", async (req, res): Promise<any> => {
-  console.log("body:",req.body)
+  console.log("body:", req.body);
   const validInputs = paymentDetailsSchema.safeParse(req.body);
 
-  console.log("validInputs:",validInputs)
-  
+  console.log("validInputs:", validInputs);
+
   if (!validInputs.success) {
     return res.json({
       message: "Invalid inputs",
@@ -23,6 +23,18 @@ app.post("/hdfc-webhook", async (req, res): Promise<any> => {
     amount: amountToIncrement,
     user_identifier: userId,
   } = req.body;
+
+  const transaction = await prisma.onRampTransaction.findFirst({
+    where: {
+      token,
+    },
+  });
+
+  if (transaction?.status == "Success") {
+    return res.json({
+      message: "Transaction already captured",
+    });
+  }
 
   try {
     await prisma.$transaction([

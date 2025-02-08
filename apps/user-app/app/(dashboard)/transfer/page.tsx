@@ -1,6 +1,6 @@
 import { AddMoney } from "@/components/add-money-card";
 import { BalanceCard } from "@/components/balance-card";
-import { OnRampTransactions } from "@/components/onRampTransaction-card";
+import { Transactions } from "@/components/transaction-card";
 import { auth } from "@/lib/auth";
 import { prisma } from "@repo/db";
 
@@ -49,7 +49,7 @@ export default async function TransactionsPage() {
             <div>
                 <BalanceCard amount={balance.amount} locked={balance.locked} />
                 <div className="pt-4">
-                    <OnRampTransactions transactions={latestFirstTransactions} />
+                    <Transactions transactions={latestFirstTransactions} />
                 </div>
             </div>
         </div>
