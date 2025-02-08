@@ -6,6 +6,9 @@ export const Transactions = ({
 }: {
   transactions: (OnRampTransactionType | PeerTransactionType)[];
 }) => {
+  function isMoneyReceived(t) {
+    return typeof t === "object" && "received" in t && t.received;
+  }
   if (!transactions.length) {
     return (
       <Card title="Recent Transactions">
@@ -19,14 +22,17 @@ export const Transactions = ({
         {transactions.map((t) => (
           <div className="flex justify-between" key={t.key}>
             <div>
-              <div className="text-sm">{typeof t === "object" && "received" in t && t.received? "Received" : "Sent"} INR</div>
+              <div className="text-sm">
+                {isMoneyReceived(t) ? "Received" : "Sent"} INR
+              </div>
               <div className="text-slate-600 text-xs">
                 {t.time.toDateString()}
               </div>
             </div>
-            <div className="flex flex-col justify-center">
-              {typeof t === "object" && "received" in t && t.received ? "+" : "-"} Rs{" "}
-              {t.amount / 100}
+            <div
+              className={`flex flex-col justify-center ${isMoneyReceived(t) ? "text-green-600" : " text-red-600"}`}
+            >
+              {isMoneyReceived(t) ? "+" : "-"} Rs {t.amount / 100}
             </div>
           </div>
         ))}
