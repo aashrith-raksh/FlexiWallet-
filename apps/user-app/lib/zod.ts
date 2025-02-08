@@ -12,10 +12,17 @@ export const signInSchema = object({
 
 export type SignInType = Zod.infer<typeof signInSchema>;
 
-export type TransactionType = {
+export type OnRampTransactionType = {
   time: Date;
   key: number;
   amount: number;
   status: string;
   provider: string;
+};
+
+export type PeerTransactionType = {
+  time: Date;
+  key: number;
+  amount: number;
+  received:boolean
 };
