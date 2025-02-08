@@ -63,7 +63,7 @@ export default function P2PTransferForm() {
           Submit
         </button>
       </form>
-      <PeerTransactions />
+      {/* <PeerTransactions /> */}
     </div>
   );
 }
