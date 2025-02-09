@@ -3,6 +3,8 @@ import NextAuth, { NextAuthResult } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signInSchema, SignInType } from "./zod";
 import bcrypt from "bcryptjs";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 export const result = NextAuth({
   providers: [
@@ -84,10 +86,9 @@ export const result = NextAuth({
         }
       },
     }),
+    GitHub,
+    Google
   ],
-  // pages: {
-  //   signIn: "/signin",
-  // },
   callbacks: {
     jwt(params) {
       const { token, user } = params;
