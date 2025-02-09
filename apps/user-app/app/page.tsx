@@ -9,5 +9,4 @@ export default async function LandingPage(): Promise<JSX.Element> {
     redirect("/api/auth/signin");
   }
 
-  return <h1 className="text-2xl text-slate-500">Landign page</h1>;
 }
