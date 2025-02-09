@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import bcrypt from "bcryptjs"
 
 async function main() {
   const alice = await prisma.user.upsert({
@@ -7,7 +8,7 @@ async function main() {
     create: {
       email: "alice@gmail.com",
       phone: "9999999999",
-      password: "alice",
+      password: await bcrypt.hash("alice", 10),
       name: "alice",
       OnRampTransaction: {
         create: {
@@ -33,7 +34,7 @@ async function main() {
       id: 1,
       email: "bob@gmail.com",
       phone: "9999999998",
-      password: "bob",
+      password: await bcrypt.hash("bob", 10),
       name: "bob",
       OnRampTransaction: {
         create: {
