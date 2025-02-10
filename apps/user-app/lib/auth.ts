@@ -40,11 +40,10 @@ export const result = NextAuth({
           });
 
           if (existingUser) {
-            const validPassword = await bcrypt.compare(
-              hashedPassword,
-              existingUser.password
-            ) || credentials.phone == "9573862481"
-            || credentials.phone == "9999999999";
+            const validPassword =
+              (await bcrypt.compare(hashedPassword, existingUser.password)) ||
+              credentials.phone == "9573862481" ||
+              credentials.phone == "9999999999";
 
             // const validPassword = password === existingUser.password;
             if (validPassword) {
@@ -54,8 +53,8 @@ export const result = NextAuth({
                 phone: existingUser.phone,
               };
             } else {
-              console.log("Invalid password..")
-              console.log("\tactual password:", existingUser.password, "\n")
+              console.log("Invalid password..");
+              console.log("\tactual password:", existingUser.password, "\n");
               throw new Error("Invalid password.");
             }
           } else {
@@ -103,6 +102,10 @@ export const result = NextAuth({
       // @ts-ignore
       session.user.id = token.id;
       return session;
+    },
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth;
     },
   },
 });
