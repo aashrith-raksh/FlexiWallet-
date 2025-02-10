@@ -2,14 +2,14 @@ import { prisma } from "./prisma";
 import bcrypt from "bcryptjs"
 
 async function main() {
-  const alice = await prisma.user.upsert({
-    where: { phone: "9999999999" },
+  const jay = await prisma.user.upsert({
+    where: { phone: "9999999996" },
     update: {},
     create: {
-      email: "alice@gmail.com",
-      phone: "9999999999",
-      password: await bcrypt.hash("alice", 10),
-      name: "alice",
+      email: "jay@gmail.com",
+      phone: "9999999996",
+      password: await bcrypt.hash("jay", 10),
+      name: "jay",
       OnRampTransaction: {
         create: {
           startTime: new Date(),
@@ -27,15 +27,15 @@ async function main() {
       },
     },
   });
-  const bob = await prisma.user.upsert({
-    where: { phone: "9999999998" },
+  const Emily = await prisma.user.upsert({
+    where: { phone: "9999999997" },
     update: {},
     create: {
       id: 1,
-      email: "bob@gmail.com",
-      phone: "9999999998",
-      password: await bcrypt.hash("bob", 10),
-      name: "bob",
+      email: "Emily@gmail.com",
+      phone: "9999999997",
+      password: await bcrypt.hash("Emily", 10),
+      name: "Emily",
       OnRampTransaction: {
         create: {
           startTime: new Date(),
@@ -53,7 +53,7 @@ async function main() {
       },
     },
   });
-  console.log({ alice, bob });
+  console.log({ jay, Emily });
 }
 
 main()
