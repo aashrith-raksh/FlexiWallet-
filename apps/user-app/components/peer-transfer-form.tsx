@@ -10,17 +10,29 @@ export default function PeerTransferForm({
 }) {
   const [phone, setPhone] = useState("");
   const [amount, setAmount] = useState("");
+  const [transactionStatus, setTransactionStatus] = useState("None");
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
+      setTransactionStatus("Loading");
       const response = await createPeerTransaction({
         receiverPhoneNumber: phone,
         amount: Number(amount),
       });
-      console.log(response);
+
+      if (!response.error) {
+        setTransactionStatus("Success");
+        alert(response.message);
+        setAmount("");
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
-      console.error("Transfer failed:", error);
+      setTransactionStatus("Fail");
+      alert(error);
+    } finally {
+      setTransactionStatus("None");
     }
   }
 
@@ -63,7 +75,7 @@ export default function PeerTransferForm({
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
         >
-          Submit
+          {transactionStatus != "Loading" ? "Submit" : "Sending.."}
         </button>
       </form>
       {children}

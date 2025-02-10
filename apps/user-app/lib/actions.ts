@@ -132,6 +132,7 @@ export async function createPeerTransaction(data: {
     if (error instanceof Error) {
       console.log(error.message);
       return {
+        error:true,
         message: error.message || "An error occured while P2P transfer",
       };
     }
