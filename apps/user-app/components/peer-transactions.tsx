@@ -1,12 +1,10 @@
+
 import React from "react";
 import { Transactions } from "./transaction-card";
 import { getCurrentUser } from "@/lib/utils";
 import { prisma } from "@repo/db";
-import { auth } from "@/lib/auth";
 
 async function getPeerTransactions() {
-  // const session = await auth();
-  // const user = session.user;
   const user = await getCurrentUser();
   const sentPeerTransactions = await prisma.peerTransaction.findMany({
     where: {
